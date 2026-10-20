@@ -1,0 +1,18 @@
+# Build outputs
+dist/
+.module-cache/
+.build/
+*.app/
+*.zip
+
+# Local files and diagnostic captures
+.DS_Store
+._*
+.env
+.env.*
+*.btsnoop
+*.pcap
+*.pcapng
+bugreport*
+*bugreport*
+CAPTURE_EVIDENCE.json
