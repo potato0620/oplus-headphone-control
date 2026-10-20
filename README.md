@@ -1,5 +1,7 @@
 # o+耳机控制：Mac 内置音效控制原型
 
+<img src="Resources/AppIcon.png" alt="o+耳机控制图标" width="128">
+
 当前仅验证 OPPO Enco Air2（新声版），应用名称不表示已支持其他型号。
 
 此项目通过分析自有 OPPO Enco Air2（新声版）与安卓欢律的通信记录独立实现，为非官方实验项目。它通过经典蓝牙 RFCOMM 切换耳机内置音效，不处理 Mac 上的音频流。
@@ -70,3 +72,9 @@ dist/o+耳机控制.app/Contents/MacOS/Air2Control --self-test
 | 其他设置 | 手势、游戏／低延迟模式等，按型号逐项评估 | 规划，未实现 |
 
 后续界面根据已识别型号的能力显示对应控件。缺少硬件支持或尚未验证协议的功能不提供可操作入口；不向 Air2 新声版添加降噪按钮。
+
+## 应用图标
+
+图标采用深蓝底色、薄荷绿耳机轮廓与 o+ 符号。原图位于 `Resources/AppIcon.png`，macOS 图标文件为 `Resources/AppIcon.icns`。
+
+仅重新生成图标需要 Python 3 与系统自带的 sips（使用现成图标构建 App 无需 Python）。修改原图后，在 macOS 上执行 `sh scripts/generate-icon.sh`，再运行 `sh build.sh`，即可更新 Finder、Dock 与启动台使用的应用图标。
