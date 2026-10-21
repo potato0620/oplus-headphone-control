@@ -382,7 +382,6 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
   var devices: [IOBluetoothDevice] = []
   var selectedProfile: HeadphoneProfile?
   var featureButtons: [(button: NSButton, feature: FeatureID, option: FeatureOption)] = []
-  var valueLabels: [FeatureID: NSTextField] = [:]
   var logExpanded = false
   var logCount = 0
   let isPreview = CommandLine.arguments.contains("--ui-preview")
@@ -560,7 +559,6 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
       $0.removeFromSuperview()
     }
     featureButtons.removeAll()
-    valueLabels.removeAll()
     guard let profile = selectedProfile, !profile.sections.isEmpty else {
       let empty = NSTextField(wrappingLabelWithString: selectedProfile == nil
         ? "选择已适配的耳机后，这里会按分类显示支持的功能。"
@@ -598,14 +596,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         ])
         let title = NSTextField(labelWithString: feature.title)
         title.font = .systemFont(ofSize: 14, weight: .medium)
-        let value = NSTextField(labelWithString: "未读取")
-        value.font = .systemFont(ofSize: 12)
-        value.textColor = .secondaryLabelColor
-        valueLabels[feature.id] = value
-        let titleRow = NSStackView(views: [title, NSView(), value])
-        titleRow.alignment = .centerY
-        body.addArrangedSubview(titleRow)
-        titleRow.widthAnchor.constraint(equalTo: body.widthAnchor).isActive = true
+        body.addArrangedSubview(title)
+        title.widthAnchor.constraint(equalTo: body.widthAnchor).isActive = true
         let detail = NSTextField(wrappingLabelWithString: feature.detail)
         detail.font = .systemFont(ofSize: 11)
         detail.textColor = .secondaryLabelColor
@@ -662,11 +654,6 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
       setEnabled(control.button, supported && link.ready)
       let state: NSControl.StateValue = values[control.feature] == control.option.id ? .on : .off
       if control.button.state != state { control.button.state = state }
-    }
-    for (id, label) in valueLabels {
-      let selected = selectedProfile?.features.first { $0.id == id }?.options.first { $0.id == values[id] }
-      let text = selected.map { "当前：\($0.title)" } ?? "未读取"
-      if label.stringValue != text { label.stringValue = text }
     }
   }
 
